@@ -9,7 +9,6 @@ export default function MiddleWare({ children }: {
     children: React.ReactNode
 }){
     const router = useRouter()
-    console.log(router);
     return (
         <Provider store={store}>
             {children}

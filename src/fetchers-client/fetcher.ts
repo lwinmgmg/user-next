@@ -1,4 +1,4 @@
-export default function ClientFetcher(url: string, method: string, data?: object){
+export default function clientFetcher(url: string, method: string, data?: object){
     return fetch(url, {
         method: method,
         body: data ? JSON.stringify(data) : undefined,

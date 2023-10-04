@@ -4,3 +4,10 @@ type Post = {
     title: string,
     body: string
 }
+
+type DefaultResponse = {
+    success: boolean,
+    message: string,
+    code: number,
+    data?: any
+}

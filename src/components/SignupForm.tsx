@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import FormInput from "./FormInput";
 import { FormEvent, useRef } from "react";
-import ClientFetcher from "../fetchers-client/fetcher";
+import clientFetcher from "../fetchers-client/fetcher";
 
 export default function SignUpForm(){
     const router = useRouter();
@@ -24,7 +24,7 @@ export default function SignUpForm(){
             username   : username.current?.value,
             password   : password.current?.value
         }
-        ClientFetcher("/api/signup", "POST", data).then(
+        clientFetcher("/api/signup", "POST", data).then(
             (data)=>{
                 console.log(data);
             }

@@ -1,11 +1,12 @@
 "use client";
 import { LegacyRef, useState } from "react";
 
-export default function FormInput({ className, label, type, maxLength, innerRef }:{
+export default function FormInput({ className, label, type, maxLength, innerRef, textCenter }:{
     className? : string,
     label?     : string,
     type?      : string,
     maxLength? : number,
+    textCenter?: boolean,
     innerRef?       : LegacyRef<HTMLInputElement>
 }){
     const [isFocus, setIsFocus] = useState(false);
@@ -14,7 +15,7 @@ export default function FormInput({ className, label, type, maxLength, innerRef 
             <label className="text-xs">{label}</label>
             <input
             ref={innerRef}
-            className=" text-slate-700 w-full px-3 py-2 rounded-lg"
+            className={`text-slate-700 w-full px-3 py-2 rounded-lg ${textCenter?"text-center":""}`}
             placeholder={isFocus ? undefined : label}
             type={type ? type : "text"}
             maxLength={maxLength}

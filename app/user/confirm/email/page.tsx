@@ -1,3 +1,4 @@
+import AuthMw from "@/src/components/AuthMw";
 import OtpConfirmForm from "@/src/components/OtpConfirmForm";
 import { type Metadata } from "next";
 
@@ -12,10 +13,12 @@ export default function Login({ searchParams }: {
     }
 }){
     return (
-    <main className="flex h-full w-full flex-col justify-center items-center">
-        <h1 className="text-center">Please login here</h1>
-        <div className="p-5 m-0">
-            <OtpConfirmForm />
-        </div>
-    </main>);
+    <AuthMw>
+        <main className="flex h-full w-full flex-col justify-center items-center">
+            <h1 className="text-center">Confirm Email</h1>
+            <div className="p-5 m-0">
+                <OtpConfirmForm url="/api/confirm/email" />
+            </div>
+        </main>
+    </AuthMw>);
 }

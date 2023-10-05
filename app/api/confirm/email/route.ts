@@ -1,5 +1,4 @@
 import serverFetcher from "@/src/fetchers-server/fetcher";
-import { getCookie } from "@/src/utils/getCookieData";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -25,11 +24,25 @@ export async function GET(request: NextRequest){
 }
 
 export async function POST(request: NextRequest){
-    const data = await request.json()
+    const cookie = cookies()
+    const email_confirm = cookie.get("email_confirm")
+    const data: { passcode: string } = await request.json()
+    const [status, resp]: [number, {access_token: string} | any] = await serverFetcher("http://localhost:8888/api/v1/func/users/otp_login", "POST", undefined, {
+        access_token: email_confirm?.value,
+        passcode: data.passcode
+    })
+    if (status == 200){
+        return NextResponse.json<DefaultResponse>({
+            success: true,
+            message: "",
+            code: 200,
+            data: resp
+        })
+    }
     return NextResponse.json<DefaultResponse>({
-        success: true,
-        message: "",
-        code: 200,
-        data: data
+        success: false,
+        message: "Failed to confirm email",
+        code: status,
+        data: resp
     })
 }

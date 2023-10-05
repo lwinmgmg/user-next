@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAppSelector } from "../store/store";
 import Image from "next/image";
+import DropDown from "./DropDown";
 
 export default function NavBar(){
     const isAuth = useAppSelector(state=>state.auth.isAuth);
@@ -17,7 +18,7 @@ export default function NavBar(){
                     <li><Link href="/about" className="menu-item">About</Link></li>
                     {
                         isAuth? (
-                            <li ><Link href="/user/profile" className="menu-item flex flex-row"><img className="rounded-full h-6 w-6 mr-2" src="https://1fid.com/wp-content/uploads/2022/06/no-profile-picture-2-1024x1024.jpg" alt="Profile" /> Profile</Link></li>
+                            <DropDown ><li className="menu-item flex flex-row"><img className="rounded-full h-6 w-6" src="https://1fid.com/wp-content/uploads/2022/06/no-profile-picture-2-1024x1024.jpg" alt="Profile" /></li></DropDown>
                         ):(
                             <>
                                 <li><Link href="/user/login" className="menu-item">Login</Link></li>

@@ -6,10 +6,8 @@ export default function AuthMw({ children }: {
 }){
     const cookie = cookies();
     return (
-        <>
-            <AuthMwClient tkn={cookie.get("tkn")?.value}>
+            <AuthMwClient>
                 {children}
             </AuthMwClient>
-        </>
     );
 }

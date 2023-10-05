@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import store from '../store/store';
 import { Provider } from 'react-redux';
+import StoreinitMw from './StoreInitMw';
 
 
 export default function MiddleWare({ children }: {
@@ -11,7 +12,9 @@ export default function MiddleWare({ children }: {
     const router = useRouter()
     return (
         <Provider store={store}>
-            {children}
+            <StoreinitMw>
+                {children}
+            </StoreinitMw>
         </Provider>
     );
 }

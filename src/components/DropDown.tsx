@@ -1,22 +1,29 @@
 "use client";
 
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
+import { Fragment, useState } from 'react'
+import { Transition } from '@headlessui/react'
 import Link from 'next/link';
-
-function classNames(...classes: any[]) {
-  return classes.filter(Boolean).join(' ')
-}
 
 export default function DropDown({ children}:{
     children: React.ReactNode,
 }) {
+  const [focus, setFocus] = useState(false);
+  const onFocus = ()=>{
+    console.log("On focus");
+    setFocus(true);
+  }
+  const onBlur = ()=>{
+    setTimeout(()=>{
+      setFocus(false);
+    }, 500)
+  }
+
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <div onBlur={onBlur} className="relative">
       <div>
-        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+        <button onFocus={onFocus}>
           {children}
-        </Menu.Button>
+        </button>
       </div>
 
       <Transition
@@ -27,38 +34,25 @@ export default function DropDown({ children}:{
         leave="transition ease-in duration-75"
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
+        show={focus}
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+        <div className="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-10">
           <div className="py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <Link
-                  href="/user/profile"
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                  Account settings
-                </Link>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <Link
-                  href="/user/logout"
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                  Logout
-                </Link>
-              )}
-            </Menu.Item>
+            <Link
+              href="/user/profile"
+              className="hover:bg-slate-100 hover:text-slate-800 px-4 py-2 text-sm block"
+            >
+              Account settings
+            </Link>
+            <Link
+              href="/user/logout"
+              className="hover:bg-slate-100 hover:text-slate-800 px-4 py-2 text-sm block"
+            >
+              Logout
+            </Link>
           </div>
-        </Menu.Items>
+        </div>
       </Transition>
-    </Menu>
+    </div>
   )
 }

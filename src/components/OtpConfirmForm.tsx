@@ -46,11 +46,16 @@ export default function OtpConfirmForm({ url }: {
     useEffect(()=>{
         clientFetcher(url, "GET").then((res: DefaultResponse) =>{
             if (! res.success){
-                console.error("Failed to confirm email")
+                console.error("Failed")
             }
         });
         counterReset();
-    }, [counterReset, url])
+        return ()=>{
+            if (counterRef.current){
+                clearInterval(counterRef.current);
+            }
+        }
+    }, [])
     return (
         <div className="rounded-lg ring-1 shadow-sm max-w-sm p-5 space-y-5">
             <FormInput label="Otp Code" type="number" maxLength={6} innerRef={code} />

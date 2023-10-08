@@ -9,13 +9,16 @@ export async function GET(request: NextRequest){
     const tkn = cookie.get("tkn")
     const headers = new Headers()
     headers.append("Authorization", `Bearer ${tkn?.value}`)
-    const [status, resp]: [number, {access_token: string} | any] = await serverFetcher("http://localhost:8888/api/v1/func/users/enable_auth", "GET", headers)
+    const [status, resp]: [number, {access_token: string, image: string} | any] = await serverFetcher("http://localhost:8888/api/v1/func/users/enable_auth", "GET", headers)
     if (status === 200){
         cookie.set(ENABLE_AUTHENTICATOR, resp.access_token, {maxAge: 60})
         return NextResponse.json<DefaultResponse>({
             success: true,
             code: 200,
             message: "",
+            data: {
+                image: resp.image
+            }
         })
     }
     return NextResponse.json<DefaultResponse>({

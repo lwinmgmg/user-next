@@ -28,7 +28,7 @@ export default function ProfilePage(){
                         <p>Enable two factor authentication. <Link className="text-blue-400 font-bold hover:cursor-pointer" href="/user/enable/two_factor_auth">Click Here</Link></p>
                     </div>
                     <div>
-                        <p>Enable Authenticator. <Link className="text-blue-400 font-bold hover:cursor-pointer" href="/user/enable/authenticator">Click Here</Link></p>
+                        <p>Use Authenticator. <Link className="text-blue-400 font-bold hover:cursor-pointer" href="/user/enable/authenticator">Click Here</Link></p>
                     </div>
                     <div className="flex flex-row justify-center space-x-3">
                         <button className="btn-primary">Save</button>

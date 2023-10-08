@@ -1,7 +1,7 @@
 "use client";
 
 import { useDispatch } from "react-redux";
-import { setAuth } from "../store/auth";
+import { setAuth, setUsername } from "../store/auth";
 import { useRouter } from "next/navigation";
 import FormInput from "./FormInput";
 import { FormEvent, useRef } from "react";
@@ -36,8 +36,9 @@ export default function LoginForm({ params }:{
             if (data.success){
                 if (data.code === 200){
                     dispatch(setAuth());
+                    dispatch(setUsername(usernameStr));
                     isBackOrNot(params?.back, router);
-                }else if (data.code === 201){
+                }else if (data.code === 202){
                     console.log(data);
                 }
             }else{

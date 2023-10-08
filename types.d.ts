@@ -11,3 +11,8 @@ type DefaultResponse = {
     code: number,
     data?: any
 }
+
+type AuthData = {
+    token: string,
+    username: string
+}

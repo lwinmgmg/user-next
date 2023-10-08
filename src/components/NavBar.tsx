@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useAppSelector } from "../store/store";
-import Image from "next/image";
 import DropDown from "./DropDown";
 
 export default function NavBar(){
@@ -14,7 +13,7 @@ export default function NavBar(){
             <div className="menus hidden sm:block">
                 <ul className="flex flex-row items-center space-x-4">
                     <li><Link href="/" className="menu-item">Home</Link></li>
-                    <li><Link href="/contact" className="menu-item">Contact</Link></li>
+                    <li><Link href="/contact" className="menu-item">Wiki</Link></li>
                     <li><Link href="/about" className="menu-item">About</Link></li>
                     {
                         isAuth? (

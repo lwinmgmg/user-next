@@ -17,7 +17,7 @@ export default function Login({ searchParams }: {
         <main className="flex h-full w-full flex-col justify-center items-center">
             <h1 className="text-center">Confirm Email</h1>
             <div className="p-5 m-0">
-                <OtpConfirmForm url="/api/confirm/email" />
+                <OtpConfirmForm url="/api/confirm/email" needPass />
             </div>
         </main>
     </AuthMw>);

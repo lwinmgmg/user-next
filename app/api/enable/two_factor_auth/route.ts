@@ -1,39 +1,40 @@
 import serverFetcher from "@/src/fetchers-server/fetcher";
+import { getServerEnable2F, getServerToken, setServerEnable2F } from "@/src/utils/serverCookieData";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-const ENABLE_TWO_FACTOR = "ksjdkjfklajksjfka"
-
 export async function GET(request: NextRequest){
     const cookie = cookies()
-    const tkn = cookie.get("tkn")
-    const headers = new Headers()
-    headers.append("Authorization", `Bearer ${tkn?.value}`)
+    const tkn = getServerToken(cookie);
+    const headers = new Headers();
+    headers.append("Authorization", `Bearer ${tkn}`);
     const [status, resp]: [number, {access_token: string} | any] = await serverFetcher("http://localhost:8888/api/v1/func/users/enable_two_factor", "GET", headers)
-    if (status === 200){
-        cookie.set(ENABLE_TWO_FACTOR, resp.access_token, {maxAge: 60})
+    if (status === 200)
+    {
+        setServerEnable2F(resp.access_token, cookie);
         return NextResponse.json<DefaultResponse>({
             success: true,
             code: 200,
             message: "",
-        })
+        });
     }
     return NextResponse.json<DefaultResponse>({
         success: false,
         code: status,
         message: "Failed to enable two factor"
-    })
+    });
 }
 
 export async function POST(request: NextRequest){
-    const cookie = cookies()
-    const email_confirm = cookie.get(ENABLE_TWO_FACTOR)
-    const data: { passcode: string } = await request.json()
+    const cookie = cookies();
+    const enable2F = getServerEnable2F(cookie);
+    const data: { passcode: string } = await request.json();
     const [status, resp]: [number, {access_token: string} | any] = await serverFetcher("http://localhost:8888/api/v1/func/users/otp_login", "POST", undefined, {
-        access_token: email_confirm?.value,
+        access_token: enable2F,
         passcode: data.passcode
-    })
-    if (status == 200){
+    });
+    if (status == 200)
+    {
         return NextResponse.json<DefaultResponse>({
             success: true,
             message: "",

@@ -17,7 +17,7 @@ export default function Login({ searchParams }: {
         <main className="flex h-full w-full flex-col justify-center items-center">
             <h1 className="text-center">Enable two factor</h1>
             <div className="p-5 m-0">
-                <OtpConfirmForm url="/api/enable/two_factor_auth" />
+                <OtpConfirmForm url="/api/enable/two_factor_auth" needPass />
             </div>
         </main>
     </AuthMw>);

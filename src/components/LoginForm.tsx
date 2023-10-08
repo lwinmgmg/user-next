@@ -4,9 +4,10 @@ import { useDispatch } from "react-redux";
 import { setAuth, setUsername } from "../store/auth";
 import { useRouter } from "next/navigation";
 import FormInput from "./FormInput";
-import { FormEvent, useRef } from "react";
+import { FormEvent, useEffect, useRef } from "react";
 import { authClient } from "../fetchers-client/auth";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { useAppDispatch, useAppSelector } from "../store/store";
 
 function isBackOrNot(isBack: string | undefined, router: AppRouterInstance){
     if (isBack == 'true'){
@@ -21,6 +22,7 @@ export default function LoginForm({ params }:{
         back: string
     }
 }){
+    const isAuth = useAppSelector(state=>state.auth.isAuth);
     const dispatch = useDispatch();
     const router = useRouter();
     const username = useRef<HTMLInputElement>(null);
@@ -37,17 +39,20 @@ export default function LoginForm({ params }:{
                 if (data.code === 200){
                     dispatch(setAuth());
                     dispatch(setUsername(usernameStr));
-                    isBackOrNot(params?.back, router);
-                }else if (data.code === 202){
-                    console.log(data);
+                }else if (data.code === 201){
+                    router.push("/user/login/otp");
                 }
             }else{
                 alert("Error");
                 console.log(data);
             }
         });
-
     }
+    useEffect(()=>{
+        if (isAuth){
+            isBackOrNot(params?.back, router);
+        }
+    }, [isAuth, params, router])
     return (
         <form onSubmit={login}>
             <div className="rounded-lg ring-1 shadow-sm max-w-sm p-5 space-y-5">

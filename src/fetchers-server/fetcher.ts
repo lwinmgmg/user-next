@@ -4,6 +4,5 @@ export default async function serverFetcher(url: string, method: string, headers
         body: data ? JSON.stringify(data) : data,
         headers: headers
     })
-    console.log(resp)
     return [resp.status, await resp.json()]
 }

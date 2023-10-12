@@ -3,12 +3,11 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 import counterReducer from "./counter"
 import authStore from './auth';
-
 const store =  configureStore({
   reducer: {
     counter: counterReducer,
-    auth: authStore
-  }
+    auth: authStore,
+  },
 })
 
 export default store;

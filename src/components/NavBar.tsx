@@ -14,7 +14,7 @@ export default function NavBar(){
                 <ul className="flex flex-row items-center space-x-4">
                     <li><Link href="/" className="menu-item">Home</Link></li>
                     <li><Link href="/contact" className="menu-item">Wiki</Link></li>
-                    <li><Link href="/about" className="menu-item">About</Link></li>
+                    <li><Link href="/chat" className="menu-item">Chat</Link></li>
                     {
                         isAuth? (
                             <li className=""><DropDown ><img className="rounded-full h-8 w-8" src="https://1fid.com/wp-content/uploads/2022/06/no-profile-picture-2-1024x1024.jpg" alt="Profile" /></DropDown></li>

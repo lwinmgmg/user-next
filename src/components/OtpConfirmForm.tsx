@@ -91,6 +91,9 @@ export default function OtpConfirmForm({ url, needPass }: {
                 if (res.data && res.data.image){
                     setB64Img(res.data.image);
                 }
+                if (res.data && res.data.key){
+                    setSecret(res.data.key);
+                }
             }
         });
         counterReset();

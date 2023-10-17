@@ -29,13 +29,16 @@ export default function StoreInitMw({ children }: {
     }, [dispatch, authData, isAuth])
 
     useEffect(()=>{
-        if (!ws){
-            setWs(new WebSocket(socketUrl))
+        if (!isAuth){
+            if (ws && ws.readyState !== ws.CLOSED) ws.close();
             return
         }
-        if (ws.readyState !== ws.CLOSED){
+
+        if (ws && ws.readyState !== ws.CLOSED){
             if (!ws.onopen){
-                ws.onopen = onOpen(ws);
+                if (authData){
+                    ws.onopen = onOpen(ws, authData.token);
+                }
             }
             if (!ws.onmessage){
                 ws.onmessage = onMessage;
@@ -46,17 +49,21 @@ export default function StoreInitMw({ children }: {
             if (!ws.onclose){
                 ws.onclose = ()=>{
                     setTimeout(()=>{
-                        setWs(new WebSocket(socketUrl))
+                        if (getClientAuthData(cookie)){
+                            setWs(new WebSocket(socketUrl));
+                        }
                     }, 5000)
                 }
             }
+        }else{
+            setWs(new WebSocket(socketUrl))
         }
         return ()=>{
-            if (ws.readyState !== ws.CLOSED){
+            if (ws && ws.readyState !== ws.CLOSED){
                 ws.close()
             }
         }
-    }, [socketUrl, ws])
+    }, [socketUrl, ws, isAuth, cookie])
     return (
         <WsContext.Provider value={ws}>
             {children}

@@ -1,11 +1,12 @@
 "use client"
 import sendWsMesg from "@/src/socket/sendMesg";
 import { WsContext } from "@/src/store/socket";
-import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useRef, useState } from "react";
 
 export default function ChatPage(){
     const ws = useContext(WsContext);
     const [mesg, setMesg] = useState("");
+    const timeOut : { current: NodeJS.Timeout | null } = useRef<NodeJS.Timeout>(null)
     const onChange = (e: ChangeEvent<HTMLInputElement>)=>{
         setMesg(e.target.value)
         if (e.target.value.length > 0){
@@ -19,6 +20,21 @@ export default function ChatPage(){
                     },
                 }
             }), ws)
+            if (timeOut.current){
+                clearTimeout(timeOut.current)
+            }
+            timeOut.current = setTimeout(()=>{
+                sendWsMesg(JSON.stringify({
+                    socket_type: "chat",
+                    data: {
+                        cid: 10,
+                        chat_type: "untype",
+                        mesg: {
+                            mesg: e.target.value,
+                        },
+                    }
+                }), ws)
+            }, 20000)
         }else{
             sendWsMesg(JSON.stringify({
                 socket_type: "chat",
@@ -30,6 +46,9 @@ export default function ChatPage(){
                     },
                 }
             }), ws)
+            if (timeOut.current){
+                clearTimeout(timeOut.current)
+            }
         }
     }
     const onSubmit = (e: FormEvent)=>{

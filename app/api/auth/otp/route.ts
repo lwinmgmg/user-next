@@ -8,16 +8,20 @@ export async function POST(request: NextRequest){
     const loginOtp = getServerLoginOtp(cookie);
     const username = getServerLogin(cookie);
     const data: { passcode: string } = await request.json();
-    const [status, resp]: [number, {access_token: string} | any] = await serverFetcher("http://localhost:8888/api/v1/func/users/otp_login", "POST", undefined, {
+    const [status, resp]: [number, {access_token: string}] = await serverFetcher("http://localhost:8888/api/v1/func/users/otp_login", "POST", undefined, {
         access_token: loginOtp,
         passcode: data.passcode
     });
     if (status == 200)
     {
-        if (username){
+        const headers = new Headers()
+        headers.append("Authorization", `Bearer ${resp.access_token}`)
+        const [status, respProfile]: [number, {code: string}] = await serverFetcher("http://localhost:8888/api/v1/users/profile", "GET", headers)
+        if (status === 200 && username){
             setServerAuthData({
                 token: resp.access_token,
-                username: username
+                username: username,
+                code: respProfile.code
             }, cookie);
             return NextResponse.json<DefaultResponse>({
                 success: true,

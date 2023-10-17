@@ -1,8 +1,48 @@
+"use client";
+
 import AuthMw from "@/src/components/AuthMw";
 import ProfileFields from "@/src/components/ProfileFields";
+import clientFetcher from "@/src/fetchers-client/fetcher";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
+type UserData = {
+    "code": string,
+    "username": string,
+    "is_authenticator": boolean,
+    "is_2fa": boolean,
+    "partner_data": {
+        "first_name": string,
+        "last_name": string,
+        "email": string,
+        "is_email_confirmed": boolean,
+        "phone": string,
+        "is_phone_confirmed": boolean,
+        "code": string
+    }
+}
 
 export default function ProfilePage(){
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
+    const [phone, setPhone] = useState("");
+    // const [isPhoneConfirmed, setIsPhoneConfirmed] = useState(false);
+    const [is2Fa, setis2Fa] = useState(false);
+    const [isAuthr, setIsAuthr] = useState(false);
+    useEffect(()=>{
+        clientFetcher("/api/profile", "GET").then(
+            (res: DefaultResponse) =>{
+                const data: UserData = res.data;
+                setName(data.partner_data.first_name + " " + data.partner_data.last_name);
+                setEmail(data.partner_data.email);
+                setIsEmailConfirmed(data.partner_data.is_email_confirmed);
+                setPhone(data.partner_data.phone);
+                setis2Fa(data.is_2fa);
+                setIsAuthr(data.is_authenticator)
+            }
+        )
+    }, [])
     return (
         <>
             <main className="p-10 space-y-4 text-center">
@@ -17,19 +57,19 @@ export default function ProfilePage(){
                         </div>
                     </div>
                     <div>
-                        <ProfileFields className="text-2xl"/>
+                        <ProfileFields value={name} onChange={(e)=>setName(e.target.value)} className="text-2xl"/>
                     </div>
-                    <ProfileFields label="Email"/>
-                    <div>
+                    <ProfileFields value={email} onChange={(e)=>setEmail(e.target.value)}  label="Email"/>
+                    {!isEmailConfirmed && <div>
                         <p>Confirm your email <Link className="text-blue-400 font-bold hover:cursor-pointer" href="/user/confirm/email">Here</Link></p>
-                    </div>
-                    <ProfileFields label="Phone"/>
-                    <div>
+                    </div>}
+                    <ProfileFields value={phone} onChange={(e)=>setPhone(e.target.value)} label="Phone"/>
+                    {!is2Fa && <div>
                         <p>Enable two factor authentication. <Link className="text-blue-400 font-bold hover:cursor-pointer" href="/user/enable/two_factor_auth">Click Here</Link></p>
-                    </div>
-                    <div>
+                    </div>}
+                    {!isAuthr && <div>
                         <p>Use Authenticator. <Link className="text-blue-400 font-bold hover:cursor-pointer" href="/user/enable/authenticator">Click Here</Link></p>
-                    </div>
+                    </div>}
                     <div className="flex flex-row justify-center space-x-3">
                         <button className="btn-primary">Save</button>
                         <button className="btn-secondary px-2">Cancel</button>

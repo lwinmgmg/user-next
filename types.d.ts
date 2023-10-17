@@ -14,5 +14,6 @@ type DefaultResponse = {
 
 type AuthData = {
     token: string,
-    username: string
+    username: string,
+    code: string,
 }

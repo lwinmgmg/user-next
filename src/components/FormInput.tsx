@@ -1,5 +1,5 @@
 "use client";
-import { LegacyRef, useState } from "react";
+import { ChangeEvent, LegacyRef, useState } from "react";
 
 export default function FormInput({ className, label, type, maxLength, innerRef, textCenter }:{
     className? : string,
@@ -7,7 +7,8 @@ export default function FormInput({ className, label, type, maxLength, innerRef,
     type?      : string,
     maxLength? : number,
     textCenter?: boolean,
-    innerRef?       : LegacyRef<HTMLInputElement>
+    innerRef?       : LegacyRef<HTMLInputElement>,
+    onChange?:(e: ChangeEvent<HTMLInputElement>)=>any
 }){
     const [isFocus, setIsFocus] = useState(false);
     return (

@@ -1,7 +1,7 @@
 import sendWsMesg from "./sendMesg"
 
-export default function onOpen(ws: WebSocket) {
+export default function onOpen(ws: WebSocket, token: string) {
     return ()=>{
-        sendWsMesg("Hellodkfa", ws);
+        sendWsMesg(token, ws);
     }
 };

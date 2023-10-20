@@ -45,7 +45,7 @@ export default function ProfilePage(){
     }, [])
     return (
         <>
-            <main className="p-10 space-y-4 text-center">
+            <main className="h-full p-10 space-y-4 text-center">
                 <AuthMw>
                     <div>
                         <div className="relative h-60 w-60 mx-auto -z-10">

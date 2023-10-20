@@ -1,6 +1,8 @@
 export default function onError(ws: WebSocket) {
     return (err: Event)=>{
-        console.error('Socket encountered error: ', err, 'Closing socket');
-        ws.close();
+        console.log('Socket encountered error: ', err, 'Closing socket');
+        if (ws && (ws.readyState === ws.OPEN || ws.readyState === ws.CONNECTING)) {
+            ws.close();
+        };
     };
 };

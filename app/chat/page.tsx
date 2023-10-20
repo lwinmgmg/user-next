@@ -1,89 +1,29 @@
 "use client"
-import sendWsMesg from "@/src/socket/sendMesg";
-import { WsContext } from "@/src/store/socket";
-import { ChangeEvent, FormEvent, useContext, useRef, useState } from "react";
+import ChatConvBox from "@/src/components/ChatConv";
+import getConversations from "@/src/fetchers-client/getConversations";
+import { addConvList } from "@/src/store/conversation";
+import { useAppDispatch, useAppSelector } from "@/src/store/store";
+import { ConversationInfo } from "@/types/conversationInfo.type";
+import { useEffect } from "react";
 
 export default function ChatPage(){
-    const ws = useContext(WsContext);
-    const [mesg, setMesg] = useState("");
-    const timeOut : { current: NodeJS.Timeout | null } = useRef<NodeJS.Timeout>(null)
-    const onChange = (e: ChangeEvent<HTMLInputElement>)=>{
-        setMesg(e.target.value)
-        if (e.target.value.length > 0){
-            sendWsMesg(JSON.stringify({
-                socket_type: "chat",
-                data: {
-                    cid: 10,
-                    chat_type: "type",
-                    mesg: {
-                        mesg: e.target.value,
-                    },
-                }
-            }), ws)
-            if (timeOut.current){
-                clearTimeout(timeOut.current)
+    const convs = useAppSelector(state=>state.conv.convList)
+    const dispatch = useAppDispatch();
+    useEffect(()=>{
+        getConversations().then(
+            (data: ConversationInfo[])=>{
+                data.forEach(tmp=>{
+                    dispatch(addConvList(tmp))
+                })
             }
-            timeOut.current = setTimeout(()=>{
-                sendWsMesg(JSON.stringify({
-                    socket_type: "chat",
-                    data: {
-                        cid: 10,
-                        chat_type: "untype",
-                        mesg: {
-                            mesg: e.target.value,
-                        },
-                    }
-                }), ws)
-            }, 20000)
-        }else{
-            sendWsMesg(JSON.stringify({
-                socket_type: "chat",
-                data: {
-                    cid: 10,
-                    chat_type: "untype",
-                    mesg: {
-                        mesg: e.target.value,
-                    },
-                }
-            }), ws)
-            if (timeOut.current){
-                clearTimeout(timeOut.current)
+        )    }, [dispatch])
+    return (<>
+    <main className="h-full bg-slate-500">
+        <div className="flex flex-col max-w-lg bg-slate-200 py-1 scroll-auto w-full h-full m-auto">
+            {
+                convs.map(conv=><ChatConvBox key={conv.id} convId={conv.id}/>)
             }
-        }
-    }
-    const onSubmit = (e: FormEvent)=>{
-        e.preventDefault();
-        sendWsMesg(JSON.stringify({
-            socket_type: "chat",
-            data: {
-                cid: 10,
-                chat_type: "new",
-                mesg: {
-                    mesg: mesg,
-                },
-            }
-        }), ws)
-        setMesg("")
-    }
-    return(
-        <main className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 h-full bg-orange-300">
-            <div className="">
-
-            </div>
-            <div className="lg:col-span-3 flex flex-col">
-                <div className=" h-20 bg-slate-300">
-
-                </div>
-                <div className="grow">
-                    <p>Message</p>
-                </div>
-                <form className="w-full h-20 bg-slate-100 flex flex-row justify-center items-center" onSubmit={onSubmit}>
-                    <input value={mesg} onChange={onChange} placeholder="Message" className="px-5 py-2 ring-1 ring-slate-600 text-lg" />
-                </form>
-            </div>
-            <div>
-
-            </div>
-        </main>
-    );
+        </div>
+    </main>
+    </>);
 }

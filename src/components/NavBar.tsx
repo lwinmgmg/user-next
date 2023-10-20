@@ -7,7 +7,7 @@ import DropDown from "./DropDown";
 export default function NavBar(){
     const isAuth = useAppSelector(state=>state.auth.isAuth);
     return (
-        <nav className="py-0 px-3 m-0 flex flex-row justify-between sm:justify-around items-center h-16 bg-slate-100 dark:bg-slate-900 shadow-md sticky">
+        <nav className="py-5 px-3 m-0 flex flex-row justify-between sm:justify-around items-center h-16 bg-slate-100 dark:bg-slate-900 shadow-md sticky">
             <h1 className="text-2xl font-semibold"><Link href="/">Company</Link></h1>
             <div className="hidden sm:block"><input type="text" placeholder="search" /></div>
             <div className="menus hidden sm:block">

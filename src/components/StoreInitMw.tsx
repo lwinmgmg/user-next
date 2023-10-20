@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import Cookies from "universal-cookie";
-import { setAuth, setUsername } from "../store/auth";
+import { setAuth, setToken, setUid, setUsername } from "../store/auth";
 import { getClientAuthData } from "../utils/clientCookieData";
 import { WsContext } from "../store/socket";
 import onOpen from "../socket/onOpen";
@@ -24,13 +24,17 @@ export default function StoreInitMw({ children }: {
             if (!isAuth){
                 dispatch(setAuth());
                 dispatch(setUsername(authData.username));
+                dispatch(setUid(authData.code))
+                dispatch(setToken(authData.token))
             }
         }
     }, [dispatch, authData, isAuth])
 
     useEffect(()=>{
         if (!isAuth){
-            if (ws && ws.readyState !== ws.CLOSED) ws.close();
+            if (ws && (ws.readyState === ws.OPEN || ws.readyState === ws.CONNECTING)) {
+                ws.close()
+            };
             return
         }
 

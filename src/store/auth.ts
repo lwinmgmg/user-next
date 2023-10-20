@@ -1,27 +1,35 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
 export const authStore = createSlice({
-  name: 'auth',
-  initialState: {
+name: 'auth',
+initialState: {
     isAuth: false,
-    username: ""
-  },
-  reducers: {
+    username: "",
+    uid: "",
+    token: "",
+},
+reducers: {
     setAuth: state => {
-      state.isAuth = true;
+    state.isAuth = true;
     },
     unSetAuth: state => {
-      state.isAuth = false;
+    state.isAuth = false;
     },
     setUsername: (state, action: PayloadAction<string>) =>{
-      state.username = action.payload
+    state.username = action.payload
     },
     unSetUsername: (state, action: PayloadAction<string>) =>{
-      state.username = action.payload
+    state.username = action.payload
+    },
+    setUid: (state, action: PayloadAction<string>)=>{
+    state.uid = action.payload
+    },
+    setToken: (state, action: PayloadAction<string>)=>{
+    state.token = action.payload
     }
-  }
+}
 })
 
-export const { setAuth, unSetAuth, setUsername, unSetUsername } = authStore.actions
+export const { setAuth, unSetAuth, setUsername, unSetUsername, setUid, setToken } = authStore.actions
 
 export default authStore.reducer

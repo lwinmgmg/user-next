@@ -17,3 +17,45 @@ type AuthData = {
     username: string,
     code: string,
 }
+
+// Chat Datamodels
+type ChatMesg = {
+	id?: string,
+	parent_id?: string,
+    mesg?: string,
+    status?: number,
+    att_url?: string,
+	uid?:string,
+	user_list?: string[],
+    react_id?: number,
+    fields?: string[]
+}
+
+type Message = {
+	_id: string,
+    user_id: string,
+    status: number,
+    conversation_id: number,
+    parent_id?: string,
+    excluded_users?: string[],
+    message?: string,
+    attachment_url?: string,
+    old_messages?: Message[],
+    is_edited?: boolean,
+    updated_time?: number,
+	created_time?: number,
+}
+
+type ChatData = {
+    name: string,
+    cid: number,
+    conv_type: 1|2,
+	chat_type: string,
+	mesg: ChatMesg,
+	img_url: string
+}
+
+type SocketData = {
+	socket_type: "chat",
+	data: ChatData
+}

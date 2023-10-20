@@ -3,11 +3,18 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 import counterReducer from "./counter"
 import authStore from './auth';
+import convStore from './conversation';
+import mesgStore from './message';
 const store =  configureStore({
-  reducer: {
+reducer: {
     counter: counterReducer,
     auth: authStore,
-  },
+    conv: convStore,
+    mesg: mesgStore,
+},
+middleware: (mdw)=>mdw({
+    serializableCheck: false
+})
 })
 
 export default store;

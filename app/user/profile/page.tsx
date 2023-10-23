@@ -3,24 +3,9 @@
 import AuthMw from "@/src/components/AuthMw";
 import ProfileFields from "@/src/components/ProfileFields";
 import clientFetcher from "@/src/fetchers-client/fetcher";
+import type { UserData } from "@/types/user.type";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-type UserData = {
-    "code": string,
-    "username": string,
-    "is_authenticator": boolean,
-    "is_2fa": boolean,
-    "partner_data": {
-        "first_name": string,
-        "last_name": string,
-        "email": string,
-        "is_email_confirmed": boolean,
-        "phone": string,
-        "is_phone_confirmed": boolean,
-        "code": string
-    }
-}
 
 export default function ProfilePage(){
     const [name, setName] = useState("");

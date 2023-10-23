@@ -45,17 +45,3 @@ type Message = {
     updated_time?: number,
 	created_time?: number,
 }
-
-type ChatData = {
-    name: string,
-    cid: number,
-    conv_type: 1|2,
-	chat_type: string,
-	mesg: ChatMesg,
-	img_url: string
-}
-
-type SocketData = {
-	socket_type: "chat",
-	data: ChatData
-}

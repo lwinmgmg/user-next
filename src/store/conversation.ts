@@ -1,33 +1,39 @@
-import { ConversationInfo } from '@/types/conversationInfo.type';
+import type { ConversationDetail, ConversationInfo } from '@/types/conversationInfo.type';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-type Conversation = {
-    id: number,
-    uids: string[]
+export interface ConversationDetailDict {
+    [key: number]: ConversationDetail
 }
 
 export const convStore = createSlice({
-name: 'auth',
+name: 'conv',
 initialState: {
-    activeUids: [] as string[],
-    activeConvId: 0 as number,
-    convList: [] as ConversationInfo[],
+    activeConv: null as ConversationDetail | null,
+    convMap: {} as ConversationDetailDict,
 },
 reducers: {
-    setActiveConvId: (state, action: PayloadAction<number>) => {
-        state.activeConvId = action.payload;
+    setActiveConv: (state, action: PayloadAction<ConversationDetail>) => {
+        state.activeConv = action.payload;
     },
-    setConvList: (state, action: PayloadAction<ConversationInfo[]>) => {
-        state.convList = [...state.convList, ...action.payload.filter(data=>!(data.id in state.convList.map(conv=>conv.id)))];
+
+    addConv(state, actions: PayloadAction<ConversationDetail>){
+        const tmpObj: ConversationDetailDict = {...state.convMap}
+        tmpObj[actions.payload.id] = actions.payload
+        state.convMap = tmpObj
     },
-    addConvList: (state, action: PayloadAction<ConversationInfo>) => {
-        if (state.convList.filter((data)=>data.id == action.payload.id).length == 0){
-            state.convList = [...state.convList, action.payload];
+    addConvs(state, actions: PayloadAction<ConversationDetail[]>){
+        const tmpObj: ConversationDetailDict = {}
+        actions.payload.forEach((conv)=>{
+            tmpObj[conv.id] = conv
+        })
+        state.convMap = {
+            ...state.convMap,
+            ...tmpObj
         }
-    },
+    }
 }
 })
 
-export const { setActiveConvId, setConvList, addConvList } = convStore.actions
+export const { setActiveConv, addConv, addConvs } = convStore.actions
 
 export default convStore.reducer

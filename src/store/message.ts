@@ -1,27 +1,28 @@
+import { MessageDetail } from '@/types/message.type'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-interface Dict {
-    [key: string]: Message
+export interface MessageDetailDict {
+    [key: string]: MessageDetail
 }
 
 export const mesgStore = createSlice({
 name: 'mesg',
 initialState: {
-    messages: {} as Dict,
+    messages: {} as MessageDetailDict,
 },
 reducers: {
-    addMessage(state, actions: PayloadAction<Message>){
-        const tmpObj: Dict = {}
-        tmpObj[actions.payload._id] = actions.payload
+    addMessage(state, actions: PayloadAction<MessageDetail>){
+        const tmpObj: MessageDetailDict = {}
+        tmpObj[actions.payload.id] = actions.payload
         state.messages = {
             ...state.messages,
             ...tmpObj
         }
     },
-    addMessages(state, actions: PayloadAction<Message[]>){
-        const tmpObj: Dict = {}
+    addMessages(state, actions: PayloadAction<MessageDetail[]>){
+        const tmpObj: MessageDetailDict = {}
         actions.payload.forEach((mesg)=>{
-            tmpObj[mesg._id] = mesg
+            tmpObj[mesg.id] = mesg
         })
         state.messages = {
             ...state.messages,

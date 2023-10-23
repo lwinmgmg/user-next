@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} text-slate-700 dark:text-slate-50 bg-slate-50 dark:bg-slate-950 h-screen max-h-screen flex flex-col`}>
+      <body className={`${inter.className} text-slate-700 dark:text-slate-50 bg-slate-50 dark:bg-slate-950 h-screen max-h-screen relative flex flex-col`}>
         <MiddleWare>
           <NavBar/>
           <div className="flex-grow ring-1 ring-slate-800">

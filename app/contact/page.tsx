@@ -8,15 +8,6 @@ export default async function Contact(props: any){
         <AuthMw>
             <main>
                 <h1>Contact</h1>
-                {
-                    posts.map(post => (
-                        <ul key={post.id}>
-                            <li>{post.id}</li>
-                            <li>{post.title}</li>
-                            <li>{post.body}</li>
-                        </ul>
-                    ))
-                }
             </main>
         </AuthMw>
     );

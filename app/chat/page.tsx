@@ -1,29 +1,14 @@
-"use client"
-import ChatConvBox from "@/src/components/ChatConv";
-import getConversations from "@/src/fetchers-client/getConversations";
-import { addConvList } from "@/src/store/conversation";
-import { useAppDispatch, useAppSelector } from "@/src/store/store";
-import { ConversationInfo } from "@/types/conversationInfo.type";
-import { useEffect } from "react";
+import ConvList from "@/src/components/ChatList/ConvList";
 
 export default function ChatPage(){
-    const convs = useAppSelector(state=>state.conv.convList)
-    const dispatch = useAppDispatch();
-    useEffect(()=>{
-        getConversations().then(
-            (data: ConversationInfo[])=>{
-                data.forEach(tmp=>{
-                    dispatch(addConvList(tmp))
-                })
-            }
-        )    }, [dispatch])
     return (<>
-    <main className="h-full bg-slate-500">
-        <div className="flex flex-col max-w-lg bg-slate-200 py-1 scroll-auto w-full h-full m-auto">
-            {
-                convs.map(conv=><ChatConvBox key={conv.id} convId={conv.id}/>)
-            }
-        </div>
-    </main>
+        <main className="h-full flex flex-row bg-slate-400">
+            <div className="flex-1 hidden sm:block">
+            </div>
+            <div className="space-y-3 shrink-0 p-2 flex flex-col max-w-lg w-full bg-slate-200 py-1 scroll-auto h-full m-auto">
+                <ConvList />
+            </div>
+            <div className="flex-1 hidden sm:block"></div>
+        </main>
     </>);
 }

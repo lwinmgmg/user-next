@@ -9,7 +9,6 @@ export default function DropDown({ children}:{
 }) {
   const [focus, setFocus] = useState(false);
   const onFocus = ()=>{
-    console.log("On focus");
     setFocus(true);
   }
   const onBlur = ()=>{

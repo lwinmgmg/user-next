@@ -1,3 +1,18 @@
+# Front End UI for microservices
+Currently UI supports User Service and Chat Service.
+
+## User Service
+ * Login / Signup Form
+ * Profile Page
+ * Email Confirmation
+ * Enable Two Factor Authentication
+ * Enable Authenticator ( Eg. Google Authenticator )
+
+## Chat Service
+ * Conversation Page
+ * Chat Page
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
